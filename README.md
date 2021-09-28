@@ -5,7 +5,7 @@ A global notify lib build on top of `@mui/material: ^5.0`
 **It's very well come you guys to help me to improve docs translation**
 
 - [x] `@mui/material` theme support;
-- [x] global api, use everywhere;
+- [x] global API, use everywhere;  
 
 ## Basic usages
 

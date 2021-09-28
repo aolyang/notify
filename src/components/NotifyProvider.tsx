@@ -53,7 +53,7 @@ export class NoticeContainer extends Component<ContainerProps, ContainerStates> 
   }
 
   render() {
-    return <span>Notify</span>
+    return <></>
   }
 }
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import {
@@ -8,9 +8,14 @@ import {
   useTheme
 } from "@mui/material"
 import { NotifyProvider } from "/@/components/NotifyProvider"
+import { api } from "/@/components/Msg"
+// import "./plugin/msg"
 
 function Main() {
   const theme = useTheme()
+  useEffect(() => {
+    api.info("Main Mounted!!!!")
+  })
   return <StyledEngineProvider injectFirst>
     <ThemeProvider theme={theme}>
       <App />
