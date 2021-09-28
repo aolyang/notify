@@ -7,8 +7,8 @@ import {
   ThemeProvider,
   useTheme
 } from "@mui/material"
-import { NotifyProvider } from "/@/components/NotifyProvider"
 import { api } from "/@/components/Msg"
+
 // import "./plugin/msg"
 
 function Main() {
@@ -26,9 +26,7 @@ function Main() {
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
-    <NotifyProvider>
-      <Main />
-    </NotifyProvider>
+    <Main />
   </React.StrictMode>,
   document.getElementById("root")
 )

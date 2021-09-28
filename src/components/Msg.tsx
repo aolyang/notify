@@ -1,27 +1,29 @@
 import { NoticeContainer } from "/@/components/NotifyProvider"
-import { Alert, AlertProps } from "@mui/material"
 import React from "react"
-import ReactDOM from "react-dom"
+import ReactDOM, { createPortal } from "react-dom"
+import { MsgApi, NotifyOptions } from "../../types"
 
-export type MsgConfig = {
-  severity?: AlertProps["severity"],
-  color?: AlertProps["severity"] | string
-} & AlertProps
 
-export const defaultMsgConfig: MsgConfig = {
+export const defaultMsgConfig: NotifyOptions = {
   color: "info"
 }
 
 
-class Msg extends NoticeContainer {
-  static defineMsg: (options: MsgConfig, cb?: (ins: Msg) => void) => void
+class Msg extends NoticeContainer<NotifyOptions> implements MsgApi<NotifyOptions>{
+  static defineMsg: (options: NotifyOptions, cb?: (ins: Msg) => void) => void
 
-  constructor(props: any) {
+  constructor(props: { theme?: boolean; options?: NotifyOptions }) {
     super(props)
   }
 
   render() {
     return <>
+      Hello Msg
+      {createPortal(<div>{"children"}
+        {this.state.snackbars.map((msg, index) => {
+          return <h4 key={index}>{msg.color}: {msg.msg}</h4>
+        })}
+      </div>, document.body)}
     </>
   }
 }
@@ -36,15 +38,28 @@ Msg.defineMsg = function(options, cb) {
 }
 export const defineMsg = Msg.defineMsg
 export const api = {
-  info: (msg: string) => {
-    if (msgIns) {
-      msgIns.info(msg)
-    } else {
-      Msg.defineMsg(defaultMsgConfig, (msgIns) => {
-        msgIns.info(msg)
-        console.log("set now???", msgIns)
-      })
-      console.log("info log", msgIns)
-    }
+  open(msg, options) {
+    return new Promise<boolean>(resolve => {
+      const type = options?.severity || "open"
+      if (msgIns) {
+        console.log("api ins", msgIns)
+        msgIns[type](msg)
+      } else {
+        Msg.defineMsg(defaultMsgConfig, (msgIns) => {
+          msgIns[type](msg)
+        })
+      }
+      resolve(true)
+    })
   }
-}
+} as MsgApi<NotifyOptions>;
+
+(["info", "success", "error", "warning"] as const).forEach(type => {
+  api[type] = (msg: string, options?) => {
+    return new Promise<boolean>(resolve => {
+      api.open(msg, options).then(res => {
+        resolve(res)
+      })
+    })
+  }
+})

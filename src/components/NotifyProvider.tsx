@@ -1,55 +1,72 @@
-import React, {
-  Component,
-  createContext, createRef,
-  useContext,
-} from "react"
-import ReactDOM from "react-dom"
+import React, { Component } from "react"
+import type { NotifyOptions } from "../../types"
+import { NotifyApi } from "../../types"
 
-import type { PropsWithChildren } from "react"
-import type { NoticeProvided } from "../../types"
-import { Severity } from "../../types"
-
-export const NoticeContext = createContext<NoticeProvided>({} as NoticeProvided)
-
-type ContainerProps = {
+type ContainerProps<T> = {
   theme?: boolean
+  options?: T
 }
-type ContainerStates = {
+type ContainerStates<T> = {
   theme: boolean
-  snackbars: any[]
+  snackbars: T[]
 }
 
-export class NoticeContainer extends Component<ContainerProps, ContainerStates> {
-  static createNotice: () => void
-  state = {
-    snackbars: [],
-    theme: false
-  }
+const defaultOptions: NotifyOptions = {}
 
-  constructor(props: any) {
+export class NoticeContainer<S extends NotifyOptions>
+  extends Component<ContainerProps<S>, ContainerStates<S & { msg?: string, cb?: () => void }>>
+  implements NotifyApi<S> {
+
+  private readonly options: S
+
+  constructor(props: ContainerProps<S>) {
     super(props)
+    this.options = Object.assign({}, defaultOptions, props.options) as S
+    this.state = {
+      theme: false,
+      snackbars: []
+    }
   }
 
-  add(msg: string, options: {
-    type: Severity
-  }) {
-    console.log(msg, options.type)
+  add(msg: string, type: string, options?: S & { msg?: string, cb?: () => void }) {
+    return new Promise<boolean>(resolve => {
+      if (!options) {
+        options = { ...this.options }
+      } else {
+        options = Object.assign<{}, S, S>({}, this.options, { ...options })
+      }
+      options.msg = msg
+      options.cb = () => {
+        resolve(true)
+      }
+      this.setState((state) => {
+        state.snackbars.push(options!)
+        return {
+          ...state,
+          snackbars: state.snackbars
+        }
+      })
+    })
   }
 
-  info(msg: string, options?: any) {
-    this.add(msg, { type: "info", ...options })
+  open(msg: string, options?: S) {
+    return this.add(msg, "default", options)
   }
 
-  warning(msg: string, options?: any) {
-    this.add(msg, { type: "warning", ...options })
+  info(msg: string, options?: S) {
+    return this.add(msg, "info", options)
   }
 
-  success(msg: string, options?: any) {
-    this.add(msg, { type: "success", ...options })
+  warning(msg: string, options?: S) {
+    return this.add(msg, "warning", options)
   }
 
-  error(msg: string, options?: any) {
-    this.add(msg, { type: "error", ...options })
+  success(msg: string, options?: S) {
+    return this.add(msg, "success", options)
+  }
+
+  error(msg: string, options?: S) {
+    return this.add(msg, "error", options)
   }
 
   render() {
@@ -57,23 +74,26 @@ export class NoticeContainer extends Component<ContainerProps, ContainerStates> 
   }
 }
 
-export function NotifyProvider(props: PropsWithChildren<{}>) {
-  const noticeRef = createRef<NoticeContainer>()
-
-  const setMsg = (type: Severity) => (msg: string, options?: any): Promise<boolean> => {
-    return noticeRef.current?.[type](msg, options) as any
-  }
-  return <NoticeContext.Provider value={{
-    info: setMsg("info"),
-    warning: setMsg("warning"),
-    success: setMsg("success"),
-    error: setMsg("error")
-  }}>
-    <NoticeContainer ref={noticeRef} />
-    {props.children}
-  </NoticeContext.Provider>
-}
-
-export function useNotify() {
-  return useContext(NoticeContext)
-}
+// export const NoticeContext = createContext<MsgApi>({} as MsgApi)
+//
+// export function NotifyProvider<T>(props: PropsWithChildren<{}>) {
+//   const noticeRef = createRef<NoticeContainer<T>>()
+//
+//   const setMsg = (type: Severity | "open") => (msg: string, options?: T): Promise<boolean> => {
+//     return noticeRef.current?.[type](msg, options)
+//   }
+//   return <NoticeContext.Provider value={{
+//     open: setMsg("open"),
+//     info: setMsg("info"),
+//     warning: setMsg("warning"),
+//     success: setMsg("success"),
+//     error: setMsg("error")
+//   }}>
+//     <NoticeContainer<T> ref={noticeRef} />
+//     {props.children}
+//   </NoticeContext.Provider>
+// }
+//
+// export function useNotify() {
+//   return useContext(NoticeContext)
+// }

@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react"
-import { Button, CssBaseline } from "@mui/material"
-import { printLn } from "/@/components"
-import { useNotify } from "/@/components/NotifyProvider"
+import React, { useState } from "react"
+import { Button } from "@mui/material"
 import { api } from "/@/components/Msg"
 
 function App() {
   const [count, setCount] = useState(0)
-  const { info } = useNotify()
   const handleClick = () => {
     setCount(count + 1)
-    info("info msg by provider" + count)
   }
   const handleGlobalApi = () => {
     api.info("global message" + count)
