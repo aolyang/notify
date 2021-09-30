@@ -1,15 +1,19 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Button, Grid } from "@mui/material"
 import { api, MsgOptions } from "/@/lib/Msg"
 
 function App() {
-  const [count, setCount] = useState(0)
-  const handleClick = () => {
-    setCount(count + 1)
+  const countRef = useRef(0)
+  const [count, setCount] = useState(countRef.current)
+  const handleClick = (set?: number) => {
+    const _count = set ?? count + 1
+    setCount(_count)
+    countRef.current = _count
   }
-  const handleGlobalApi = (options: MsgOptions) => {
-    console.log("options", options.variant)
-    api.info("global message" + count, options)
+  const handleGlobalApi = (msg: string, options: MsgOptions) => {
+    const count = countRef.current += 1
+    api.info(count + "  " + msg + `${count % 2 === 0 ? "lang msg here" : ""}`, options)
+    handleClick(count)
   }
   return (
     <div className="App">
@@ -17,7 +21,7 @@ function App() {
         <p>Hello Vite + React!, count:{count}</p>
 
         <Button variant={"contained"} type="button"
-                onClick={handleClick}>
+                onClick={() => handleClick()}>
           count is: {count}
         </Button>
         <p>Alert variant: "filled" | "outlined" | "standard"</p>
@@ -25,7 +29,7 @@ function App() {
           {(["filled", "outlined", "standard"] as const).map(va => {
             return <Grid item key={va}>
               <Button variant={"contained"} type="button"
-                      onClick={() => handleGlobalApi({ variant: va })}>{va}
+                      onClick={() => handleGlobalApi(va, { variant: va })}>{va}
               </Button>
             </Grid>
           })}
@@ -40,7 +44,7 @@ function App() {
                   <Button
                     variant={"contained"}
                     type="button"
-                    onClick={() => handleGlobalApi({
+                    onClick={() => handleGlobalApi(anchor, {
                       variant: "standard",
                       anchorOrigin: anchor
                     })}>

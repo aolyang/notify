@@ -1,9 +1,11 @@
-import React, { Component, ReactNode } from "react"
+import React, { Component, forwardRef, ReactNode } from "react"
 import ReactDOM, { createPortal } from "react-dom"
 import SnackbarContainer from "/@/components/SnackbarContainer"
 import SnackbarItem from "/@/components/SnackbarItem"
-import { uuidv4 } from "/@/components/utils"
-import { CSSTransition } from "react-transition-group"
+import { Split, split, uuidv4 } from "/@/components/utils"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
+import { Collapse, Slide, SlideProps } from "@mui/material"
+import { TransitionProps } from "@mui/material/transitions"
 
 export type NotNull<T> = T extends undefined ? never : T
 export type MixTuple<T1, T2> = T1 extends string ? T2 extends string ? `${T1}-${T2}` : string : string
@@ -20,6 +22,7 @@ export interface MsgOptions {
   content?: ReactNode
   msg?: string
   cb?: MsgFunction
+  TransitionComponent?: React.ComponentType<TransitionProps>
 }
 
 export type Severity = "info" | "error" | "success" | "warning"
@@ -42,7 +45,8 @@ interface MsgProps {
   options: MsgOptions
 }
 
-type Categories = NotNull<MsgOptions["anchorOrigin"]>
+export type Categories = NotNull<MsgOptions["anchorOrigin"]>
+
 type AnchorGroup = Record<Categories, MsgItem[]>
 
 export const defaultMsgConfig: MsgOptions = {
@@ -53,9 +57,16 @@ export const defaultMsgConfig: MsgOptions = {
   variant: "standard"
 }
 
-type Split<T extends string, S extends string> = T extends `${infer V}${S}${infer H}` ? [V, H] : string[]
-const split = <T extends string, S extends string>(str: T, divider: S): Split<T, S> => {
-  return str.split(divider) as any
+function withDefaultSlide(anchorOrigin: Split<Categories, "-">) {
+  let direction: SlideProps["direction"]
+  if (anchorOrigin[1] === "center") {
+    direction = anchorOrigin[0] === "top" ? "down" : "up"
+  } else {
+    direction = anchorOrigin[1] === "right" ? "left" : "right"
+  }
+  return function TransitionLeft(props: Omit<SlideProps, "direction">) {
+    return <Slide {...props} direction={direction} />
+  } as MsgOptions["TransitionComponent"]
 }
 
 class Msg<T = MsgOptions> extends Component<MsgProps, MsgStates> {
@@ -71,7 +82,6 @@ class Msg<T = MsgOptions> extends Component<MsgProps, MsgStates> {
   }
 
   add(options: T) {
-    console.log("set state ?????")
     this.setState((state) => {
       const lists = [...state.snackbars]
       const msgItem: MsgItem = { id: uuidv4(), ...options }
@@ -103,16 +113,22 @@ class Msg<T = MsgOptions> extends Component<MsgProps, MsgStates> {
     const eachSnackbars = (Object.keys(eachAnchor) as Categories[]).map((anchor) => {
       const origin = split(anchor, "-")
       const snackbars = eachAnchor[anchor] || []
+
       return (<SnackbarContainer key={anchor} anchorOrigin={{
         vertical: origin[0],
         horizontal: origin[1]
       }}>
-        {snackbars.map(item => {
-          return (<CSSTransition key={item.id} timeout={3000}>
-            <SnackbarItem option={item}
-                          onTimeout={(id) => this.removeItem(id)} />
-          </CSSTransition>)
-        })}
+          {snackbars.map(item => {
+            if (!item.TransitionComponent) {
+              item.TransitionComponent = withDefaultSlide(origin)
+            }
+            return (
+              <SnackbarItem key={item.id}
+                            option={item}
+                            defaultOptions={defaultMsgConfig}
+                            onTimeout={(id) => this.removeItem(id)} />
+            )
+          })}
       </SnackbarContainer>)
     })
     return <>
