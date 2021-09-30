@@ -7,14 +7,12 @@ import {
   ThemeProvider,
   useTheme
 } from "@mui/material"
-import { api } from "/@/components/Msg"
-
 // import "./plugin/msg"
 
 function Main() {
   const theme = useTheme()
   useEffect(() => {
-    api.info("Main Mounted!!!!")
+    // api.info("Main Mounted!!!!")
   })
   return <StyledEngineProvider injectFirst>
     <ThemeProvider theme={theme}>
