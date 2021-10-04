@@ -41,12 +41,14 @@ const StyledSnackbar = styled(Snackbar)(({ theme }) => {
     },
     [`.${classes.contentRoot}`]: {
       ...theme.typography.body2,
-      // backgroundColor,
-      // color: theme.palette.getContrastText(backgroundColor),
       alignItems: "center",
       padding: "6px 16px",
-      borderRadius: "4px"
+      borderRadius: "4px",
+      minWidth: "280px"
       // boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)"
+    },
+    [`.${classes.contentRoot}-defaultShadow`]: {
+      boxShadow: "1px 3px 5px -1px rgba(0,0,0,0.2)"
     },
     [`.${classes.message}`]: {
       display: "flex",
@@ -74,7 +76,6 @@ export default function SnackbarItem(props: {
     if (timerRef.current) {
       clearTimeout(timerRef.current)
       timerRef.current = null
-      props.onTimeout(option.id)
     }
   }
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function SnackbarItem(props: {
       timerRef.current = window.setTimeout(() => {
         setOpen(false)
         clearTimer()
-      }, option.autoHideDuration || props.defaultOptions.autoHideDuration || 3000)
+      }, option.autoHideDuration || props.defaultOptions.autoHideDuration)
     }
   })
 
@@ -93,15 +94,19 @@ export default function SnackbarItem(props: {
                     )}
                     color={option.color}
                     TransitionComponent={option.TransitionComponent}
+                    TransitionProps={{
+                      onExited: (...args) => {
+                        props.onTimeout(option.id)
+                      }
+                    }}
                     sx={{
                       position: "unset",
                       marginY: (theme) => theme.spacing(1)
                     }}>
-      <Alert className={clsx(classes.contentRoot)}
+      <Alert className={clsx(classes.contentRoot, {
+        [`${classes.contentRoot}-defaultShadow`]: true
+      })}
              severity={option.severity || "info"}
-             sx={{
-               minWidth: "280px"
-             }}
              variant={option.variant}
              action={
                <>

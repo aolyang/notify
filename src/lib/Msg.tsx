@@ -53,7 +53,7 @@ export const defaultMsgConfig: MsgOptions = {
   severity: "info",
   color: "info",
   anchorOrigin: "bottom-right",
-  autoHideDuration: 3000,
+  autoHideDuration: 6000,
   variant: "standard"
 }
 
