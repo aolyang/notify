@@ -1,10 +1,7 @@
 import {
   Alert,
-  Button, createSvgIcon,
-  Icon,
-  IconButton,
-  Snackbar, SnackbarContent,
-  styled, SvgIcon, useTheme
+  Snackbar,
+  styled, useTheme
 } from "@mui/material"
 import { MsgItem, MsgOptions } from "/@/lib/Msg"
 import React, { useEffect, useRef, useState } from "react"
@@ -92,10 +89,15 @@ export default function SnackbarItem(props: {
   const alertClasses = clsx(classes.contentRoot, {
     [`${classes.contentRoot}-defaultShadow`]: true
   })
-  console.log("options", option)
+
   const closeItem = () => {
     setOpen(false)
     clearTimer()
+  }
+  const actionArgs = {
+    option,
+    theme,
+    closeItem
   }
   return <>
     <StyledSnackbar open={open}
@@ -112,20 +114,16 @@ export default function SnackbarItem(props: {
                     }}>
       {
         option.content ? <div>
-          {option.content(option)}
+          {option.content(actionArgs)}
         </div> : (
           <Alert className={alertClasses}
-                 severity={option.severity}
-                 variant={option.variant}
                  color={option.color}
+                 severity={option.color}
+                 variant={option.variant}
                  icon={option.icon ?? props.defaultOptions.icon}
                  action={
                    <>
-                     {option.action ? option.action({
-                       option,
-                       theme,
-                       closeItem
-                     }) : null}
+                     {option.action ? option.action(actionArgs) : null}
                    </>
                  }>
             <div className={classes.message}>{option.msg}</div>

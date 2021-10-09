@@ -1,5 +1,3 @@
-// this file is deprecated
-
 import React, { Component, ReactElement, ReactNode } from "react"
 import ReactDOM, { createPortal } from "react-dom"
 import SnackbarContainer from "/@/components/SnackbarContainer"
@@ -19,7 +17,6 @@ export type RequiredMsgOptions = {
   // Alert
   color: Severity
   variant: "filled" | "outlined" | "standard"
-  icon: ReactNode
 }
 
 type ActionArgs = {
@@ -29,9 +26,9 @@ type ActionArgs = {
 }
 
 export interface MsgOptions extends Partial<RequiredMsgOptions> {
-  severity?: Severity,
   msg?: string
-  content?: (option: MsgOptions) => ReactElement
+  icon?: ReactNode
+  content?: (arg: ActionArgs) => ReactElement
   cb?: MsgFunction
   TransitionComponent?: React.ComponentType<TransitionProps>
   action?: (arg: ActionArgs) => ReactNode
@@ -42,8 +39,7 @@ export const defaultMsgConfig: RequiredMsgOptions = {
   color: "info",
   anchorOrigin: "bottom-right",
   autoHideDuration: 16000,
-  variant: "standard",
-  icon: false
+  variant: "standard"
 }
 
 export type Severity = "info" | "error" | "success" | "warning"

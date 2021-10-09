@@ -28,7 +28,6 @@ function App() {
     api.success(_msg, {
       variant: "standard",
       action: ({ closeItem }) => <>
-        <Button color={"info"}>Undo</Button>
         <IconButton
           onClick={closeItem}
         >
