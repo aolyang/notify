@@ -1,11 +1,11 @@
 // this file is deprecated
 
-import React, { Component, ReactNode } from "react"
+import React, { Component, ReactElement, ReactNode } from "react"
 import ReactDOM, { createPortal } from "react-dom"
 import SnackbarContainer from "/@/components/SnackbarContainer"
 import SnackbarItem from "/@/components/SnackbarItem"
 import { Split, split, uuidv4 } from "/@/components/utils"
-import { Slide } from "@mui/material"
+import { Slide, Theme } from "@mui/material"
 
 import type { SlideProps } from "@mui/material"
 import type { TransitionProps } from "@mui/material/transitions"
@@ -14,30 +14,36 @@ export type NotNull<T> = T extends undefined ? never : T
 export type MixTuple<T1, T2> = T1 extends string ? T2 extends string ? `${T1}-${T2}` : string : string
 
 export type RequiredMsgOptions = {
-  color: Severity | string
   anchorOrigin: MixTuple<"top" | "bottom", "left" | "center" | "right">
   autoHideDuration: number
   // Alert
+  color: Severity
   variant: "filled" | "outlined" | "standard"
   icon: ReactNode
-  action: ReactNode
+}
+
+type ActionArgs = {
+  option: MsgOptions
+  theme: Theme,
+  closeItem: () => void
 }
 
 export interface MsgOptions extends Partial<RequiredMsgOptions> {
   severity?: Severity,
   msg?: string
-  content?: ReactNode
+  content?: (option: MsgOptions) => ReactElement
   cb?: MsgFunction
   TransitionComponent?: React.ComponentType<TransitionProps>
+  action?: (arg: ActionArgs) => ReactNode
+  closeItem?: () => void
 }
 
 export const defaultMsgConfig: RequiredMsgOptions = {
-  color: "#282828",
+  color: "info",
   anchorOrigin: "bottom-right",
   autoHideDuration: 16000,
   variant: "standard",
-  icon: false,
-  action: false
+  icon: false
 }
 
 export type Severity = "info" | "error" | "success" | "warning"

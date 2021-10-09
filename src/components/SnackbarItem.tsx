@@ -1,4 +1,11 @@
-import { Alert, Snackbar, styled } from "@mui/material"
+import {
+  Alert,
+  Button, createSvgIcon,
+  Icon,
+  IconButton,
+  Snackbar, SnackbarContent,
+  styled, SvgIcon, useTheme
+} from "@mui/material"
 import { MsgItem, MsgOptions } from "/@/lib/Msg"
 import React, { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
@@ -61,6 +68,7 @@ export default function SnackbarItem(props: {
   onTimeout: (id: string) => void
 }) {
   const { option } = props
+  const theme = useTheme()
   const timerRef = useRef<number | null>(null)
   const [open, setOpen] = useState(true)
   const clearTimer = () => {
@@ -84,10 +92,14 @@ export default function SnackbarItem(props: {
   const alertClasses = clsx(classes.contentRoot, {
     [`${classes.contentRoot}-defaultShadow`]: true
   })
+  console.log("options", option)
+  const closeItem = () => {
+    setOpen(false)
+    clearTimer()
+  }
   return <>
     <StyledSnackbar open={open}
                     className={snackbarClasses}
-                    color={option.color}
                     TransitionComponent={option.TransitionComponent}
                     TransitionProps={{
                       onExited: (...args) => {
@@ -98,23 +110,28 @@ export default function SnackbarItem(props: {
                       position: "unset",
                       marginY: (theme) => theme.spacing(1)
                     }}>
-      <Alert className={alertClasses}
-             severity={option.severity}
-             variant={option.variant}
-             color={option.severity}
-             icon={"warning"}
-             sx={{
-               color: "#fafafa",
-               backgroundColor: props.defaultOptions.color
-             }}
-             action={
-               <>
-                 {/*<Button>action1</Button>*/}
-                 {/*<Button>action2</Button>*/}
-               </>
-             }>
-        <div className={classes.message}>{option.msg}</div>
-      </Alert>
+      {
+        option.content ? <div>
+          {option.content(option)}
+        </div> : (
+          <Alert className={alertClasses}
+                 severity={option.severity}
+                 variant={option.variant}
+                 color={option.color}
+                 icon={option.icon ?? props.defaultOptions.icon}
+                 action={
+                   <>
+                     {option.action ? option.action({
+                       option,
+                       theme,
+                       closeItem
+                     }) : null}
+                   </>
+                 }>
+            <div className={classes.message}>{option.msg}</div>
+          </Alert>
+        )
+      }
     </StyledSnackbar>
   </>
 }

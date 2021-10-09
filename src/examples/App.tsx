@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
-import { Button, Grid } from "@mui/material"
+import { Button, Grid, IconButton } from "@mui/material"
 import { api, MsgOptions } from "/@/lib/Msg"
+import { Close } from "@mui/icons-material"
 
 function App() {
   const countRef = useRef(0)
@@ -12,9 +13,31 @@ function App() {
   }
   const handleGlobalApi = (msg: string, options: MsgOptions) => {
     const count = countRef.current += 1
-    api.info(count + "  " + msg + `${count % 2 === 0 ? "lang msg here" : ""}`, options)
+    const _msg = count + "  " + msg + `${count % 2 === 0 ? "lang msg here" : ""}`
+    if (count % 2 === 0) {
+      api.success(_msg, options)
+    } else {
+      api.info(_msg, options)
+    }
     handleClick(count)
   }
+
+  const handleAction = () => {
+    const count = countRef.current += 1
+    const _msg = count + "  another message " + `${count % 2 === 0 ? "lang msg here" : ""}`
+    api.success(_msg, {
+      variant: "standard",
+      action: ({ closeItem }) => <>
+        <Button color={"info"}>Undo</Button>
+        <IconButton
+          onClick={closeItem}
+        >
+          <Close />
+        </IconButton>
+      </>
+    })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -55,6 +78,10 @@ function App() {
             })
           }
         </Grid>
+        <p>custom action</p>
+        <Button
+          variant={"contained"}
+          type="button" onClick={handleAction}>Close action</Button>
       </header>
     </div>
   )

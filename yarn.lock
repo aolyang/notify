@@ -347,6 +347,13 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
+"@mui/icons-material@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.npmmirror.com/@mui/icons-material/download/@mui/icons-material-5.0.3.tgz#2a9d4f9078f375cef40f63a240b59cefa4a27eec"
+  integrity sha1-Kp1PkHjzdc70D2OiQLWc76Sifuw=
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+
 "@mui/material@^5.0.3":
   version "5.0.3"
   resolved "https://registry.npmmirror.com/@mui/material/download/@mui/material-5.0.3.tgz#5ac4d9f7d9635efc9cf7347373e49db41f1b065b"

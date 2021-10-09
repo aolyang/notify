@@ -14,7 +14,6 @@ const componentName = "SnackbarContainer"
 
 const classes = {
   root: `${componentName}-root`,
-  rootDense: `${componentName}-rootDense`,
   top: `${componentName}-top`,
   bottom: `${componentName}-bottom`,
   left: `${componentName}-left`,
@@ -78,17 +77,15 @@ interface ContainerProps {
   anchorOrigin: {
     vertical: "top" | "bottom",
     horizontal: "left" | "center" | "right"
-  },
-  dense?: boolean
+  }
 }
 
 function SnackbarContainer(props: PropsWithChildren<ContainerProps>) {
-  const { className, anchorOrigin, dense } = props
+  const { className, anchorOrigin } = props
 
   const combinedClassname = clsx(
     classes[anchorOrigin.vertical],
     classes[anchorOrigin.horizontal],
-    { [classes.rootDense]: dense },
     classes.root, // root should come after others to override maxWidth
     className
   )
