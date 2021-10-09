@@ -332,13 +332,13 @@
 
 "@emotion/weak-memoize@^0.2.5":
   version "0.2.5"
-  resolved "https://registry.nlark.com/@emotion/weak-memoize/download/@emotion/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
+  resolved "https://registry.nlark.com/@emotion/weak-memoize/download/@emotion/weak-memoize-0.2.5.tgz?cache=0&sync_timestamp=1631928976108&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40emotion%2Fweak-memoize%2Fdownload%2F%40emotion%2Fweak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha1-ju2YLi7m9/TkTCU+EpYpgHke/UY=
 
-"@mui/core@5.0.0-alpha.48":
-  version "5.0.0-alpha.48"
-  resolved "https://registry.npmmirror.com/@mui/core/download/@mui/core-5.0.0-alpha.48.tgz#ed9517bd3d2c2da12142f1958df2503567be459a"
-  integrity sha1-7ZUXvT0sLaEhQvGVjfJQNWe+RZo=
+"@mui/core@5.0.0-alpha.50":
+  version "5.0.0-alpha.50"
+  resolved "https://registry.npmmirror.com/@mui/core/download/@mui/core-5.0.0-alpha.50.tgz#055b7ccf8557f849e8e61a39a8e3943f8abad9b0"
+  integrity sha1-BVt8z4VX+Eno5ho5qOOUP4q62bA=
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@emotion/is-prop-valid" "^1.1.0"
@@ -347,14 +347,14 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/material@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.npmmirror.com/@mui/material/download/@mui/material-5.0.1.tgz#5690cd5bf7d9de48008269c89b22c7d7495cbc6c"
-  integrity sha1-VpDNW/fZ3kgAgmnImyLH10lcvGw=
+"@mui/material@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.npmmirror.com/@mui/material/download/@mui/material-5.0.3.tgz#5ac4d9f7d9635efc9cf7347373e49db41f1b065b"
+  integrity sha1-WsTZ99ljXvyc9zRzc+SdtB8bBls=
   dependencies:
     "@babel/runtime" "^7.15.4"
-    "@mui/core" "5.0.0-alpha.48"
-    "@mui/system" "^5.0.1"
+    "@mui/core" "5.0.0-alpha.50"
+    "@mui/system" "^5.0.3"
     "@mui/types" "^7.0.0"
     "@mui/utils" "^5.0.1"
     "@popperjs/core" "^2.4.4"
@@ -384,10 +384,10 @@
     "@emotion/cache" "^11.4.0"
     prop-types "^15.7.2"
 
-"@mui/system@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.npmmirror.com/@mui/system/download/@mui/system-5.0.1.tgz#2a8592d116c5a05b6991316d772937d100fc7e0a"
-  integrity sha1-KoWS0RbFoFtpkTFtdyk30QD8fgo=
+"@mui/system@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.npmmirror.com/@mui/system/download/@mui/system-5.0.3.tgz#6c126be5c2796fe89af93aa0e76d1c3c6dcccf45"
+  integrity sha1-bBJr5cJ5b+ia+Tqg520cPG3Mz0U=
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@mui/private-theming" "^5.0.1"
@@ -400,7 +400,7 @@
 
 "@mui/types@^7.0.0":
   version "7.0.0"
-  resolved "https://registry.nlark.com/@mui/types/download/@mui/types-7.0.0.tgz#a7398502bc9c508875aafcbe28aea599b2c3d203"
+  resolved "https://registry.npmmirror.com/@mui/types/download/@mui/types-7.0.0.tgz#a7398502bc9c508875aafcbe28aea599b2c3d203"
   integrity sha1-pzmFArycUIh1qvy+KK6lmbLD0gM=
 
 "@mui/utils@^5.0.1":
@@ -415,9 +415,9 @@
     react-is "^17.0.2"
 
 "@popperjs/core@^2.4.4":
-  version "2.10.1"
-  resolved "https://registry.nlark.com/@popperjs/core/download/@popperjs/core-2.10.1.tgz#728ecd95ab207aab8a9a4e421f0422db329232be"
-  integrity sha1-co7NlasgequKmk5CHwQi2zKSMr4=
+  version "2.10.2"
+  resolved "https://registry.npmmirror.com/@popperjs/core/download/@popperjs/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
+  integrity sha1-B5jAM1Hw3qGlpMq93yalWny+5ZA=
 
 "@rollup/pluginutils@^4.1.1":
   version "4.1.1"
@@ -463,7 +463,16 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.24":
+"@types/react@*":
+  version "17.0.27"
+  resolved "https://registry.npmmirror.com/@types/react/download/@types/react-17.0.27.tgz#6498ed9b3ad117e818deb5525fa1946c09f2e0e6"
+  integrity sha1-ZJjtmzrRF+gY3rVSX6GUbAny4OY=
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.24":
   version "17.0.24"
   resolved "https://registry.nlark.com/@types/react/download/@types/react-17.0.24.tgz?cache=0&sync_timestamp=1632251466396&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-17.0.24.tgz#7e1b3f78d0fc53782543f9bce6d949959a5880bd"
   integrity sha1-fhs/eND8U3glQ/m85tlJlZpYgL0=
@@ -536,7 +545,7 @@ chalk@^2.0.0:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-clsx@^1.1.1:
+clsx@^1.1.0, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.nlark.com/clsx/download/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha1-mLMTT5q73yOyZjSRrOE8XAOnMYg=
@@ -573,7 +582,7 @@ cosmiconfig@^6.0.0:
 
 csstype@^3.0.2, csstype@^3.0.9:
   version "3.0.9"
-  resolved "https://registry.nlark.com/csstype/download/csstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
+  resolved "https://registry.nlark.com/csstype/download/csstype-3.0.9.tgz?cache=0&sync_timestamp=1631540623771&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcsstype%2Fdownload%2Fcsstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
   integrity sha1-ZBCvMbJr0FIJM9AsvGT86c4/vws=
 
 debug@^4.1.0:
@@ -665,7 +674,7 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.nlark.com/hoist-non-react-statics/download/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha1-7OCsr3HWLClpwuxZ/v9CpLGoW0U=
@@ -756,6 +765,14 @@ node-releases@^1.1.76:
   resolved "https://registry.nlark.com/node-releases/download/node-releases-1.1.76.tgz?cache=0&sync_timestamp=1632151316505&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnode-releases%2Fdownload%2Fnode-releases-1.1.76.tgz#df245b062b0cafbd5282ab6792f7dccc2d97f36e"
   integrity sha1-3yRbBisMr71SgqtnkvfczC2X824=
 
+notistack@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npmmirror.com/notistack/download/notistack-2.0.2.tgz#18361a0ce39d2c2d8c3ef58ae43cf4b30d78b800"
+  integrity sha1-GDYaDOOdLC2MPvWK5Dz0sw14uAA=
+  dependencies:
+    clsx "^1.1.0"
+    hoist-non-react-statics "^3.3.0"
+
 object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.nlark.com/object-assign/download/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -822,12 +839,12 @@ react-dom@^17.0.2:
 
 react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
-  resolved "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz?cache=0&sync_timestamp=1632500315315&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Freact-is%2Fdownload%2Freact-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  resolved "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
 react-is@^17.0.2:
   version "17.0.2"
-  resolved "https://registry.npmmirror.com/react-is/download/react-is-17.0.2.tgz?cache=0&sync_timestamp=1632500315315&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Freact-is%2Fdownload%2Freact-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
+  resolved "https://registry.npmmirror.com/react-is/download/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
 
 react-refresh@^0.10.0:
@@ -855,7 +872,7 @@ react@^17.0.2:
 
 regenerator-runtime@^0.13.4:
   version "0.13.9"
-  resolved "https://registry.nlark.com/regenerator-runtime/download/regenerator-runtime-0.13.9.tgz?cache=0&sync_timestamp=1626994846308&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fregenerator-runtime%2Fdownload%2Fregenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
+  resolved "https://registry.nlark.com/regenerator-runtime/download/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha1-iSV0Kpj/2QgUmI11Zq0wyjsmO1I=
 
 resolve-from@^4.0.0:

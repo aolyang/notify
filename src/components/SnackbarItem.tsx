@@ -1,16 +1,7 @@
-import {
-  Alert,
-  AlertTitle,
-  Button, Collapse, emphasize,
-  IconButton,
-  Slide, SlideProps,
-  Snackbar, styled
-} from "@mui/material"
-import { Categories, MsgItem, MsgOptions } from "/@/lib/Msg"
+import { Alert, Snackbar, styled } from "@mui/material"
+import { MsgItem, MsgOptions } from "/@/lib/Msg"
 import React, { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
-import { split } from "/@/components/utils"
-
 
 const componentName = "SnackbarItem"
 
@@ -48,7 +39,7 @@ const StyledSnackbar = styled(Snackbar)(({ theme }) => {
       // boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)"
     },
     [`.${classes.contentRoot}-defaultShadow`]: {
-      boxShadow: "1px 3px 5px -1px rgba(0,0,0,0.2)"
+      boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.2)"
     },
     [`.${classes.message}`]: {
       display: "flex",
@@ -87,11 +78,15 @@ export default function SnackbarItem(props: {
     }
   })
 
+  const snackbarClasses = clsx(
+    classes.wrappedRoot
+  )
+  const alertClasses = clsx(classes.contentRoot, {
+    [`${classes.contentRoot}-defaultShadow`]: true
+  })
   return <>
     <StyledSnackbar open={open}
-                    className={clsx(
-                      classes.wrappedRoot
-                    )}
+                    className={snackbarClasses}
                     color={option.color}
                     TransitionComponent={option.TransitionComponent}
                     TransitionProps={{
@@ -103,15 +98,19 @@ export default function SnackbarItem(props: {
                       position: "unset",
                       marginY: (theme) => theme.spacing(1)
                     }}>
-      <Alert className={clsx(classes.contentRoot, {
-        [`${classes.contentRoot}-defaultShadow`]: true
-      })}
-             severity={option.severity || "info"}
+      <Alert className={alertClasses}
+             severity={option.severity}
              variant={option.variant}
+             color={option.severity}
+             icon={"warning"}
+             sx={{
+               color: "#fafafa",
+               backgroundColor: props.defaultOptions.color
+             }}
              action={
                <>
-                 <Button>action1</Button>
-                 <Button>action2</Button>
+                 {/*<Button>action1</Button>*/}
+                 {/*<Button>action2</Button>*/}
                </>
              }>
         <div className={classes.message}>{option.msg}</div>

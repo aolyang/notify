@@ -1,28 +1,43 @@
-import React, { Component, forwardRef, ReactNode } from "react"
+// this file is deprecated
+
+import React, { Component, ReactNode } from "react"
 import ReactDOM, { createPortal } from "react-dom"
 import SnackbarContainer from "/@/components/SnackbarContainer"
 import SnackbarItem from "/@/components/SnackbarItem"
 import { Split, split, uuidv4 } from "/@/components/utils"
-import { CSSTransition, TransitionGroup } from "react-transition-group"
-import { Collapse, Slide, SlideProps } from "@mui/material"
-import { TransitionProps } from "@mui/material/transitions"
+import { Slide } from "@mui/material"
+
+import type { SlideProps } from "@mui/material"
+import type { TransitionProps } from "@mui/material/transitions"
 
 export type NotNull<T> = T extends undefined ? never : T
 export type MixTuple<T1, T2> = T1 extends string ? T2 extends string ? `${T1}-${T2}` : string : string
 
-export interface MsgOptions {
-  severity?: Severity
-  color?: Severity | string
-  anchorOrigin?: MixTuple<"top" | "bottom", "left" | "center" | "right">
-  autoHideDuration?: number
+export type RequiredMsgOptions = {
+  color: Severity | string
+  anchorOrigin: MixTuple<"top" | "bottom", "left" | "center" | "right">
+  autoHideDuration: number
   // Alert
-  variant?: "filled" | "outlined" | "standard"
-  icon?: ReactNode
-  action?: ReactNode
-  content?: ReactNode
+  variant: "filled" | "outlined" | "standard"
+  icon: ReactNode
+  action: ReactNode
+}
+
+export interface MsgOptions extends Partial<RequiredMsgOptions> {
+  severity?: Severity,
   msg?: string
+  content?: ReactNode
   cb?: MsgFunction
   TransitionComponent?: React.ComponentType<TransitionProps>
+}
+
+export const defaultMsgConfig: RequiredMsgOptions = {
+  color: "#282828",
+  anchorOrigin: "bottom-right",
+  autoHideDuration: 16000,
+  variant: "standard",
+  icon: false,
+  action: false
 }
 
 export type Severity = "info" | "error" | "success" | "warning"
@@ -47,15 +62,7 @@ interface MsgProps {
 
 export type Categories = NotNull<MsgOptions["anchorOrigin"]>
 
-type AnchorGroup = Record<Categories, MsgItem[]>
-
-export const defaultMsgConfig: MsgOptions = {
-  severity: "info",
-  color: "info",
-  anchorOrigin: "bottom-right",
-  autoHideDuration: 6000,
-  variant: "standard"
-}
+export type AnchorGroup = Record<Categories, MsgItem[]>
 
 function withDefaultSlide(anchorOrigin: Split<Categories, "-">) {
   let direction: SlideProps["direction"]
@@ -118,17 +125,17 @@ class Msg<T = MsgOptions> extends Component<MsgProps, MsgStates> {
         vertical: origin[0],
         horizontal: origin[1]
       }}>
-          {snackbars.map(item => {
-            if (!item.TransitionComponent) {
-              item.TransitionComponent = withDefaultSlide(origin)
-            }
-            return (
-              <SnackbarItem key={item.id}
-                            option={item}
-                            defaultOptions={defaultMsgConfig}
-                            onTimeout={(id) => this.removeItem(id)} />
-            )
-          })}
+        {snackbars.map(item => {
+          if (!item.TransitionComponent) {
+            item.TransitionComponent = withDefaultSlide(origin)
+          }
+          return (
+            <SnackbarItem key={item.id}
+                          option={item}
+                          defaultOptions={defaultMsgConfig}
+                          onTimeout={(id) => this.removeItem(id)} />
+          )
+        })}
       </SnackbarContainer>)
     })
     return <>
@@ -158,7 +165,7 @@ export const api = {
     if (msgIns) {
       msgIns.add(options)
     } else {
-      Msg.defineMsg(defaultMsgConfig, (msgIns) => {
+      defineMsg(defaultMsgConfig, (msgIns) => {
         msgIns.add(options)
       })
     }
@@ -167,12 +174,13 @@ export const api = {
 
 (["info", "success", "error", "warning"] as const).forEach(type => {
   api[type] = (msg: string, ...rest) => {
-    const [oOrF, cb] = rest
+    const [optOrFn, cb] = rest
     let options: MsgOptions = { color: type }
-    if (oOrF && typeof oOrF === "object") {
-      Object.assign(options, oOrF)
-    } else if (oOrF && typeof oOrF === "function") {
-      options.cb = oOrF
+
+    if (optOrFn && typeof optOrFn === "object") {
+      Object.assign(options, optOrFn)
+    } else if (optOrFn && typeof optOrFn === "function") {
+      options.cb = optOrFn
     }
     if (cb) options.cb = cb
     api.open(msg, options)
