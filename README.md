@@ -1,11 +1,15 @@
-# notify
+# notify WIP
 
 A global notify lib build on top of `@mui/material: ^5.0`
 
 **It's very well come you guys to help me to improve docs translation**
 
 - [x] `@mui/material` theme support;
-- [x] global API, use everywhere;  
+- [x] global API, use everywhere; 
+
+feel free to make an issue to ask some features.
+
+⚠ it will change any time
 
 ## Basic usages
 
